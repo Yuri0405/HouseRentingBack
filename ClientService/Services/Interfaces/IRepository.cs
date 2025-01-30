@@ -1,6 +1,6 @@
 ﻿using System.Linq.Expressions;
 
-namespace ApartmentService.Interfaces
+namespace ClientService.Services.Interfaces
 {
     public interface IRepository<T>
     {
