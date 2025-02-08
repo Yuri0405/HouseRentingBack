@@ -32,7 +32,7 @@ public class JwtTokenHelpers
     
         foreach( var role in userRoles)
         {
-            claims.Add(new Claim(ClaimTypes.Role, role));
+            claims.Add(new Claim("roleclaim", role));
         }
     
         var token = new JwtSecurityToken(

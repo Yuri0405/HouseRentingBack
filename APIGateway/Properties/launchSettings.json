@@ -12,9 +12,9 @@
     "APIGateway": {
       "commandName": "Project",
       "dotnetRunMessages": true,
-      "launchBrowser": true,
-      "launchUrl": "weatherforecast",
-      "applicationUrl": "http://localhost:5217",
+      "launchBrowser": false,
+      "launchUrl": "",
+      "applicationUrl": "http://localhost:5163",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
