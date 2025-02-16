@@ -9,6 +9,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "APIGateway", "APIGateway\AP
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ClientService", "ClientService\ClientService.csproj", "{050215FC-0AAA-4BE0-86BE-1ABD0B562880}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "APIGatewayTest", "APIGatewayTest\APIGatewayTest.csproj", "{5F81E574-B558-4757-AAAF-5136CBF5AD32}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{55341971-D76A-41D1-8272-B58B22E8D5A7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,11 +31,18 @@ Global
 		{050215FC-0AAA-4BE0-86BE-1ABD0B562880}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{050215FC-0AAA-4BE0-86BE-1ABD0B562880}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{050215FC-0AAA-4BE0-86BE-1ABD0B562880}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5F81E574-B558-4757-AAAF-5136CBF5AD32}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5F81E574-B558-4757-AAAF-5136CBF5AD32}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5F81E574-B558-4757-AAAF-5136CBF5AD32}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5F81E574-B558-4757-AAAF-5136CBF5AD32}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {324A46A6-4AD9-4992-89FF-1552686D63FA}
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{5F81E574-B558-4757-AAAF-5136CBF5AD32} = {55341971-D76A-41D1-8272-B58B22E8D5A7}
 	EndGlobalSection
 EndGlobal
