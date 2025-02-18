@@ -13,11 +13,15 @@ namespace ClientService.Services
             _context = context;
         }
 
-        public async Task<IEnumerable<AppUser>?> GetByCondition(Expression<Func<AppUser, bool>> condition)
+        public async Task<IEnumerable<AppUser>?> GetByCondition(Expression<Func<AppUser, bool>> condition,int? limit)
         {
-            var result = await _context.AppUsers.Where(condition).ToListAsync();
-
-            return result;
+            var  query = _context.AppUsers.Where(condition); 
+            if (limit.HasValue)
+            {
+                query = query.Take(limit.Value);
+            }
+            
+            return await query.ToListAsync();
         }
 
         public async Task AddAsync(AppUser user)

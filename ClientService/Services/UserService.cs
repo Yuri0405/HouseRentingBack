@@ -35,7 +35,7 @@ namespace ClientService.Services
 
             var lambda = Expression.Lambda<Func<AppUser, bool>>(predicate, parameter);
 
-            var result = await _userRepository.GetByCondition(lambda);
+            var result = await _userRepository.GetByCondition(lambda,param.Quantity);
 
             if (result == null)
             {

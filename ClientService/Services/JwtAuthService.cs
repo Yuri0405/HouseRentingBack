@@ -16,7 +16,7 @@ public class JwtAuthService
     
     public async Task<string?> Authenticate(AppUser user)
     {
-        var response = await _userRepository.GetByCondition(r => r.Name == user.Name && r.Password == user.Password);
+        var response = await _userRepository.GetByCondition(r => r.Name == user.Name && r.Password == user.Password,null);
 
         if (response == null)
         {
