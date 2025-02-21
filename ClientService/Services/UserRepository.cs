@@ -16,7 +16,7 @@ namespace ClientService.Services
         public async Task<IEnumerable<AppUser>?> GetByCondition(Expression<Func<AppUser, bool>> condition,int? limit)
         {
             var  query = _context.AppUsers.Where(condition); 
-            if (limit.HasValue)
+            if (limit.HasValue && limit.Value > 0)
             {
                 query = query.Take(limit.Value);
             }
@@ -36,10 +36,11 @@ namespace ClientService.Services
             await _context.SaveChangesAsync();
         }
 
-        public async Task DeleteAsync(Guid id)
+        public async Task DeleteAsync(string id)
         {
             var record = await _context.AppUsers.FindAsync(id);
             _context.AppUsers.Remove(record);
+            await _context.SaveChangesAsync();
         }
     }
 }

@@ -43,29 +43,50 @@ namespace ClientService.Controllers
         public async Task<ActionResult> GetUser([FromQuery] UserQueryParams parameters)
         {
             var result = await _userService.GetUserAsync(parameters);
-
-            return Ok(result);
+            if (!result.Success)
+            {
+                return NotFound(new { message = result.Message });
+            }
+            return Ok(new {message = result.Message, user = result.Data});
         }
 
         [HttpPost]
         public async Task<ActionResult> AddUser(AppUser user)
         {
-            await _userService.AddUserAsync(user);
-            return Ok();
+            var result = await _userService.AddUserAsync(user);
+            
+            if (!result.Success)
+            {
+                return BadRequest(new { message = result.Message });
+            }
+            
+            return Ok(new {message = result.Message});
         }
 
         [HttpPut]
         public async Task<ActionResult> UpdateUser(AppUser user)
         {
-            await _userService.UpdateUserAsync(user);
-            return Ok();
+            var result = await _userService.UpdateUserAsync(user);
+            
+            if (!result.Success)
+            {
+                return BadRequest(new { message = result.Message });
+            }
+            
+            return Ok(new {message = result.Message});
         }
 
         [HttpDelete]
-        public async Task<ActionResult> DeleteUser(Guid id)
+        public async Task<ActionResult> DeleteUser(string id)
         {
-            await _userService.DeleteUserAsync(id);
-            return Ok();
+            var result = await _userService.DeleteUserAsync(id);
+            
+            if (!result.Success)
+            {
+                return BadRequest(new { message = result.Message });
+            }
+            
+            return Ok(new {message = result.Message});
         }
     }
 }

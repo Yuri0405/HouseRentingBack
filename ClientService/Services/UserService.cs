@@ -16,7 +16,7 @@ namespace ClientService.Services
             _userManager = userManager;
         }
 
-        public async Task<IEnumerable<AppUser>> GetUserAsync(UserQueryParams param)
+        public async Task<ServiceResult<IEnumerable<AppUser>>> GetUserAsync(UserQueryParams param)
         {
             var parameter = Expression.Parameter(typeof(AppUser), "r");
 
@@ -36,16 +36,19 @@ namespace ClientService.Services
             var lambda = Expression.Lambda<Func<AppUser, bool>>(predicate, parameter);
 
             var result = await _userRepository.GetByCondition(lambda,param.Quantity);
-
-            if (result == null)
+            
+            int count  = result.Count();
+            
+            if (count == 0)
             {
-                return new List<AppUser>();
+                return ServiceResult<IEnumerable<AppUser>>.Fail("User not found");
             }
-
-            return result.Select(r => new AppUser { Id = r.Id, Name = r.Name, Email = r.Email});
+            
+            return ServiceResult<IEnumerable<AppUser>>.Ok(
+                result.Select(r => new AppUser { Id = r.Id, Name = r.Name, Email = r.Email}));
         }
 
-        public async Task AddUserAsync(AppUser input)
+        public async Task<ServiceResult> AddUserAsync(AppUser input)
         {
             var user = new AppUser { Name = input.Name,UserName = input.Name, Password = input.Password, Email = input.Email };
             var result = await _userManager.CreateAsync(user, input.Password);
@@ -53,17 +56,66 @@ namespace ClientService.Services
             if (result.Succeeded)
             {
                 await _userManager.AddToRoleAsync(user, "User");
+                return ServiceResult.Ok($"{user.Name} updated successfully");
             }
+            
+            return MapIdentityErrors(result,"Failed to create user");
         }
 
-        public async Task UpdateUserAsync(AppUser user)
+        public async Task<ServiceResult> UpdateUserAsync(AppUser input)
         {
-            await _userRepository.UpdateAsync(new AppUser {Id = user.Id, Name = user.Name, Password = user.Password, Email = user.Email, });
+            var user = await _userManager.FindByIdAsync(input.Id);
+
+            if (user == null)
+            {
+                return ServiceResult.Fail("User not found");
+            }
+            
+            user.Name = input.Name;
+            user.UserName = input.Name;
+            user.Password = input.Password;
+            user.Email = input.Email;
+            
+            var result = await _userManager.UpdateAsync(user);
+
+            if (result.Succeeded)
+            {
+                return ServiceResult.Ok(user.Name + " updated successfully");
+            }
+            
+            return MapIdentityErrors(result,"Failed to update user");
         }
 
-        public async Task DeleteUserAsync(Guid id)
+        public async Task<ServiceResult> DeleteUserAsync(string id)
         {
-            await _userRepository.DeleteAsync(id);
+            var user = await _userManager.FindByIdAsync(id);
+
+            if (user == null)
+            {
+                return ServiceResult.Fail("User not found");
+            }
+            
+            var result = await _userManager.DeleteAsync(user);
+
+            if (!result.Succeeded)
+            {
+                return MapIdentityErrors(result);
+            }
+            
+            
+            return ServiceResult.Ok("User deleted successfully");
+        }
+        
+        private ServiceResult MapIdentityErrors(IdentityResult result, string failureMessage = "Operation failed.")
+        {
+            if (result.Succeeded)
+            {
+                return ServiceResult.Ok();
+            }
+
+            string errorMessages = string.Join("; ", result.Errors.Select(e => e.Description));
+
+            return ServiceResult.Fail($"{failureMessage} Errors: {errorMessages}");
         }
     }
 }
